@@ -1,11 +1,12 @@
 import json
+import numpy as np
+
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
-import numpy as np
-
 
 ARQUIVO_INDICE = Path(__file__).resolve().parents[1] / "data/vector_store/indice.npz"
+
 
 def indexar_chunks(chunks, caminho=ARQUIVO_INDICE):
     if not chunks:

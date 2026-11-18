@@ -2,9 +2,8 @@ import re
 import unicodedata
 import numpy as np
 
-from embeddings import gerar_embedding
-from vector_store import carregar_indice
-
+from .embeddings import gerar_embedding
+from .vector_store import carregar_indice
 
 PALAVRAS_IGNORADAS = {
     "a", "as", "ao", "aos", "com", "da", "das", "de", "do", "dos",

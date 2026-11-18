@@ -1,6 +1,7 @@
 from ollama import chat
 from retrieval import recuperar_trechos
 
+
 MODELO = "qwen3:4b"
 
 PROMPT_SISTEMA = """Você é o assistente de RPG do projeto Mimir.
