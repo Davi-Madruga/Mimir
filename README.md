@@ -1,3 +1,8 @@
+#INTEGRANTES
+Davi Farias
+Luis Gabriel 
+José Ricardo
+
 # Como rodar o Mimir no Windows
 
 ## 1. Confira o Python e o Git
