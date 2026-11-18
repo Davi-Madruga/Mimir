@@ -15,14 +15,7 @@ Quando usar uma informação dos trechos, indique o livro e a página entre par�
 """
 
 
-def gerar_resposta(pergunta, quantidade=5):
-    if not pergunta.strip():
-        raise ValueError("A pergunta não pode estar vazia.")
-
-    trechos = recuperar_trechos(pergunta, quantidade)
-    if not trechos:
-        raise ValueError("O retrieval não encontrou trechos para responder.")
-
+def gerar_resposta(pergunta, trechos):
     contexto = "\n\n".join(
         (
             f"Fonte: {trecho.get('arquivo', 'arquivo desconhecido')} | "
