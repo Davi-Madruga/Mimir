@@ -1,52 +1,57 @@
-# Mimir
-Mimir é um sistema de busca e consulta para RPGs, utilizando RAG para recuperar informações de regras, mundos, personagens, criaturas e outros conteúdos a partir de livros e documentos em uma base de dados.
+# Como rodar o Mimir no Windows
 
-## Estrutura do projeto
+## 1. Confira o Python e o Git
 
-A pasta raiz deste repositório corresponde a `mimir/`:
+Abra o PowerShell e execute os comandos abaixo. O projeto usa Python 3.12.
 
-```text
-mimir/
-├── src/
-│   ├── loader.py
-│   ├── chunking.py
-│   ├── embeddings.py
-│   ├── vector_store.py
-│   ├── retrieval.py
-│   ├── llm.py
-│   └── rag.py
-├── data/
-│   ├── raw/
-│   └── vector_store/
-├── interface/
-│   └── app.py
-├── tests/
-├── .env
-├── .gitignore
-├── requirements.txt
-└── README.md
+```powershell
+py -3.12 --version
+git --version
 ```
 
-## Responsabilidades
+Se algum comando falhar, instale o programa correspondente, abra um novo PowerShell e confira a versão novamente. [Baixar Python para Windows](https://www.python.org/downloads/windows/) · [Baixar Git para Windows](https://git-scm.com/downloads/win)
 
-- `src/loader.py`: carregar livros e documentos.
-- `src/chunking.py`: dividir documentos em trechos.
-- `src/embeddings.py`: gerar vetores para trechos e consultas.
-- `src/vector_store.py`: armazenar e consultar vetores.
-- `src/retrieval.py`: recuperar contexto relevante.
-- `src/llm.py`: integrar o modelo de linguagem.
-- `src/rag.py`: coordenar o fluxo RAG.
-- `interface/app.py`: disponibilizar a interface de uso.
-- `data/raw/`: guardar os documentos de entrada.
-- `data/vector_store/`: guardar o índice vetorial persistido.
-- `tests/`: reunir os testes do projeto.
+## 2. Instale o Ollama e baixe o modelo
 
-## Estado atual
+Instale e abra o [Ollama para Windows](https://ollama.com/download/windows). Em um novo PowerShell, baixe o modelo usado pelo Mimir e aguarde a conclusão.
 
-Estrutura inicial: os módulos contêm apenas descrições de suas responsabilidades.
-O fluxo RAG e a interface ainda precisam ser implementados; as dependências serão
-definidas nessa etapa.
+```powershell
+ollama pull qwen3:4b
+```
 
-O arquivo `.env` guarda configurações locais e é ignorado pelo Git. Em um novo
-clone, crie esse arquivo na raiz conforme as configurações necessárias.
-Os arquivos `.gitkeep` preservam as pastas vazias no controle de versão.
+Mantenha o Ollama em execução enquanto estiver consultando os livros.
+
+## 3. Clone o repositório e instale as dependências
+
+```powershell
+git clone https://github.com/Davi-Madruga/rag-rpg.git
+cd rag-rpg
+py -3.12 -m venv venv
+.\venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+## 4. Adicione os PDFs e gere o índice
+
+Copie seus livros em PDF para `data/raw/`. Em `indexar_base.py`, substitua a linha que define `PASTA_PDFS` pela seguinte e salve o arquivo.
+
+```python
+PASTA_PDFS = Path(__file__).parent / "data" / "raw"
+```
+
+Na raiz do repositório, execute o comando abaixo. Na primeira execução, o projeto baixa o modelo de embeddings `all-MiniLM-L6-v2` e processa os PDFs, incluindo os das subpastas.
+
+```powershell
+.\venv\Scripts\python.exe indexar_base.py
+```
+
+Aguarde a mensagem `Índice salvo em` antes de abrir a interface. Repita a indexação quando adicionar, alterar ou remover PDFs.
+
+## 5. Inicie a interface
+
+Na raiz do repositório, execute:
+
+```powershell
+.\venv\Scripts\python.exe -m streamlit run interface/app.py
+```
+
+Abra o endereço indicado como `Local URL` no terminal, digite uma pergunta e clique em **Consultar**. Nas próximas sessões, basta abrir o Ollama e repetir o comando desta etapa se os PDFs continuarem os mesmos.
